@@ -1,0 +1,61 @@
+package br.com.ebac.productsApi.Dto;
+
+public class ProdutoRequestDto {
+
+    private Long id;
+    private String nome;
+    private String descricao;
+    private Double preco;
+    private CategoriaDto categoriaDto;
+
+    public ProdutoRequestDto(Long id, CategoriaDto categoriaDto, String nome, Double preco, String descricao) {
+        this.id = id;
+        this.categoriaDto = categoriaDto;
+        this.nome = nome;
+        this.preco = preco;
+        this.descricao = descricao;
+    }
+
+    public ProdutoRequestDto() {
+    }
+
+    public CategoriaDto getCategoriaDto() {
+        return categoriaDto;
+    }
+
+    public void setCategoriaDto(CategoriaDto categoriaDto) {
+        this.categoriaDto = categoriaDto;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+}
