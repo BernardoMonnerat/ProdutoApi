@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
+import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
 
 
 @Service
@@ -39,33 +40,35 @@ public class GerenciaService {
         return produtoRepository.save(produto);
     }
 
-    public Set<ProdutoResponseDto> listarProdutos(){
+    public Page<Set<ProdutoResponseDto>> listarProdutos(){
 
         Sort ordenacao = Sort.by("nome").ascending();
+        PageRequest pedido = PageRequest.of(2, 2, ordenacao);
 
-        PageRequest pedido = PageRequest.of(0, 2, ordenacao);
+        Page<Produto> paginaDeProdutos = produtoRepository.findAll(pedido);
 
-        return produtoRepository.findAll(pedido).stream()
-                .map(p -> {
+       Page<ProdutoResponseDto> prods = paginaDeProdutos.map(p -> {
 
-                    CategoriaDto categoriaDto = Mapper.categoriaToCategoriaDto(p.getCategoria());
+           CategoriaDto categoriaDto = Mapper.categoriaToCategoriaDto(p.getCategoria());
 
-                    return new ProdutoResponseDto(
-                            p.getId(),
-                            p.getNome(),
-                            p.getPreco(),
-                            categoriaDto,
-                            p.getDescricao()
-                    );
-                })
-                .collect(Collectors.toSet());
+           return new ProdutoResponseDto(
+                   p.getId(),
+                   p.getNome(),
+                   p.getPreco(),
+                   categoriaDto,
+                   p.getDescricao()
+           );
+
+       });
+
+
     }
 
     public Page<ProdutoResponseDto> buscarProdutoPorNome(String nome){
 
         Sort ordenacao = Sort.by("nome").ascending();
 
-        PageRequest pedido = PageRequest.of(0, 2, ordenacao);
+        PageRequest pedido = PageRequest.of(2, 2, ordenacao);
         Page<Produto> prod = produtoRepository.buscarPorNome(nome, pedido);
         Page<ProdutoResponseDto> pageDto = prod.map(produto -> Mapper.produtoToResponse(produto));
 
